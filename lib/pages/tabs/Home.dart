@@ -11,7 +11,7 @@ class _HomePageState extends State<HomePage> {
     return Center(
       child: Column(
         children: <Widget>[
-          RaisedButton(child:Text('搜搜'),onPressed: (){
+          RaisedButton(child:Text('搜搜1'),onPressed: (){
             Navigator.pushNamed(context, '/search');
           })
         ],
