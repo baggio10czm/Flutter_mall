@@ -20,10 +20,12 @@ class _ProductListPageState extends State<ProductListPage> {
     ScreenAdapter.init(context);
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text('商品列表${widget.arguments['pid']}'),actions: <Widget>[Text('')],),
+      appBar: AppBar(title: Text('商品列表'),
+        actions: <Widget>[Text('')]   // 隐藏左上的默认按钮
+      ),
       endDrawer: Drawer(
         child: Container(
-          child: Text("实现筛选功能"),
+          child: Text("实现筛选功能${widget.arguments['pid']}"),
         )
       ),
       body: Stack(
@@ -53,8 +55,10 @@ class _ProductListPageState extends State<ProductListPage> {
             Expanded(
               flex: 1,
               child: InkWell(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, ScreenAdapter.height(20), 0, ScreenAdapter.height(20)),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  padding: EdgeInsets.only(top: ScreenAdapter.height(30)),
                   child: Text("综合",textAlign: TextAlign.center,style: TextStyle(color: Colors.red),
                   ),
                 ),
@@ -64,8 +68,10 @@ class _ProductListPageState extends State<ProductListPage> {
             Expanded(
               flex: 1,
               child: InkWell(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, ScreenAdapter.height(20), 0, ScreenAdapter.height(20)),
+                child: Container(  // 用Container实现
+                  width: double.infinity,
+                  height: double.infinity,
+                  padding: EdgeInsets.only(top: ScreenAdapter.height(30)),
                   child: Text("销量", textAlign: TextAlign.center),
                 ),
                 onTap: () {},
@@ -74,7 +80,7 @@ class _ProductListPageState extends State<ProductListPage> {
             Expanded(
               flex: 1,
               child: InkWell(
-                child: Padding(
+                child: Padding(   // 用Padding实现
                   padding: EdgeInsets.fromLTRB(0, ScreenAdapter.height(20), 0, ScreenAdapter.height(20)),
                   child: Text("价格", textAlign: TextAlign.center),
                 ),
@@ -101,7 +107,7 @@ class _ProductListPageState extends State<ProductListPage> {
   
   Widget _productListWidget(){
     return Container(
-        padding: EdgeInsets.fromLTRB(10,0,10,0),
+        padding: EdgeInsets.all(10),
         margin: EdgeInsets.only(top: ScreenAdapter.height(88)),
         child: ListView.builder(itemCount:11,itemBuilder:(context,index){
           return Column(
