@@ -10,9 +10,21 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
+  PageController _controller;
 
-  List _pageList = [
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _controller = PageController(
+      initialPage: _currentIndex,
+    );
+  }
+
+
+  List<Widget> _pageList = [
     HomePage(),
     CategoryPage(),
     CartPage(),
@@ -25,13 +37,17 @@ class _TabsState extends State<Tabs> {
       appBar: AppBar(
         title: Text('flutter 商城实战'),
       ),
-      body: _pageList[this._currentIndex],
+      body: PageView(  // PageView 可以保存页面状态， 还有一种方式是  IndexedStack 简单应用可考虑使用
+        controller: this._controller,
+        children: _pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: this._currentIndex,
           onTap: (index) {
             setState(() {
               this._currentIndex = index;
             });
+            _controller.jumpToPage(index);
           },
           type: BottomNavigationBarType.fixed,
           fixedColor: Colors.red,
