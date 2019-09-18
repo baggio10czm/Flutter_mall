@@ -58,8 +58,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     setState(() {
       this._recProductList = recProduct.result;
     });
-    print(this._recProductList);
-    print(this._recProductList.length);
+    //print(this._recProductList);
+    //print(this._recProductList.length);
   }
 
 

@@ -126,7 +126,7 @@ class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClie
                     String pic = Config.domain + this._categoryProduct[index].pic.toString().replaceAll('\\', '/');
                     return InkWell(
                       onTap: (){
-                        Navigator.pushNamed(context, '/productList',arguments: {'pid': this._categoryProduct[index].sId});
+                        Navigator.pushNamed(context, '/productList',arguments: {'cid': this._categoryProduct[index].sId});
                       },
                       child: Container(
                           child: Column(
