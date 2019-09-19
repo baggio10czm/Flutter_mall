@@ -4,8 +4,7 @@ class ProductContentModel {
   ProductContentModel({this.result});
 
   ProductContentModel.fromJson(Map<String, dynamic> json) {
-    result =
-    json['result'] != null ? new ProductContentItem.fromJson(json['result']) : null;
+    result = json['result'] != null ? new ProductContentItem.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,11 +20,11 @@ class ProductContentItem {
   String sId;
   String title;
   String cid;
-  int price;
+  Object price;
   String oldPrice;
   int isBest;
-  int isHot;
-  int isNew;
+  Object isHot;
+  Object isNew;
   String status;
   String pic;
   String content;

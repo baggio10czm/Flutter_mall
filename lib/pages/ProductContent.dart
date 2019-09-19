@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mall/services/ScreenAdapter.dart';
-import 'package:flutter_mall/widget/JdButton.dart';
 import 'productContent/ProductContentFirst.dart';
 import 'productContent/ProductContentSecond.dart';
 import 'productContent/ProductContentThird.dart';
+import '../widget/JdButton.dart';
+import '../widget/LoadingWidget.dart';
 import 'package:dio/dio.dart';
 import '../config/Config.dart';
 import '../mode/ProductContentModel.dart';
@@ -18,7 +19,7 @@ class ProductContentPage extends StatefulWidget {
 }
 
 class _ProductContentPageState extends State<ProductContentPage> {
-
+  ProductContentItem _productContentItem;
 
   @override
   void initState() {
@@ -32,7 +33,10 @@ class _ProductContentPageState extends State<ProductContentPage> {
     print(api);
     var response = await Dio().get(api);
     var productContent = ProductContentModel.fromJson(response.data);
-    print(productContent);
+    print(productContent.result);
+    setState(() {
+      this._productContentItem = productContent.result;
+    });
   }
 
   @override
@@ -75,11 +79,11 @@ class _ProductContentPageState extends State<ProductContentPage> {
             })
           ],
         ),
-        body: Stack(
+        body: (this._productContentItem??null) != null?Stack(
           children: <Widget>[
             // 中间切换页面
             TabBarView(children: <Widget>[
-              ProductContentFirst(),
+              ProductContentFirst(this._productContentItem),
               ProductContentSecond(),
               ProductContentThird(),
             ]),
@@ -129,7 +133,7 @@ class _ProductContentPageState extends State<ProductContentPage> {
               ),
             )
           ],
-        ),
+        ):LoadingWidget(),
       )
     );
   }
