@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_mall/widget/LoadingWidget.dart';
 import '../services/ScreenAdapter.dart';
+import 'package:dio/dio.dart';
 import '../config/Config.dart';
 import '../mode/ProductModel.dart';
 
@@ -120,7 +120,7 @@ class _ProductListPageState extends State<ProductListPage> {
           decoration: BoxDecoration(color: Color.fromRGBO(233, 233, 233, 0.8), borderRadius: BorderRadius.circular(30)),
           child: TextField(
             controller: _initKeywordsController,
-            autofocus: true,
+            autofocus: false,
             decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none)),
             onChanged: (value){
               this._keyword = value;

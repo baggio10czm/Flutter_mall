@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/tabs/Tabs.dart';
 import '../pages/Search.dart';
 import '../pages/ProductList.dart';
+import '../pages/ProductContent.dart';
 
 
 //配置路由
@@ -9,6 +10,7 @@ final routes = {
   '/': (context) => Tabs(),
   '/search': (context) => SearchPage(),
   '/productList': (context,{arguments}) => ProductListPage(arguments:arguments),
+  '/productContent': (context,{arguments}) => ProductContentPage(arguments:arguments),
 };
 
 // ignore: strong_mode_top_level_function_literal_block

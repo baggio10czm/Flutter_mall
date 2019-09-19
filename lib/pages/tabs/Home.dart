@@ -157,49 +157,54 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           runSpacing: 10,
           children: this._recProductList.map((value){
             String pic = Config.domain + value.pic.toString().replaceAll('\\', '/');
-            return Container(
-              width: itemWidth,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1,color: Color.fromRGBO(233, 233, 233, 0.9))
-              ),
-              child: Column(
-                children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  child: AspectRatio(  // 用 AspectRatio 防止服务器的图片比例不统一
-                    aspectRatio: 1/1,
-                    child: Image.network(pic, fit: BoxFit.cover) ,
-                  )),
-                  Padding(
-                    padding: EdgeInsets.only(top: ScreenAdapter.height(20)),
-                    child: Text(value.title,
-                        maxLines: 2,overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.black54)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: ScreenAdapter.height(20)),
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('${value.price}',
-                            style: TextStyle(color: Colors.red, fontSize: 16),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text('${value.oldPrice}',
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 14,
-                                  decoration: TextDecoration.lineThrough)),
-                        )
-                      ],
+            return InkWell(
+              onTap: (){
+                Navigator.pushNamed(context, '/productContent',arguments:{'id':value.sId});
+              },
+              child: Container(
+                width: itemWidth,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1,color: Color.fromRGBO(233, 233, 233, 0.9))
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        width: double.infinity,
+                        child: AspectRatio(  // 用 AspectRatio 防止服务器的图片比例不统一
+                          aspectRatio: 1/1,
+                          child: Image.network(pic, fit: BoxFit.cover) ,
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(top: ScreenAdapter.height(20)),
+                      child: Text(value.title,
+                          maxLines: 2,overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.black54)),
                     ),
-                  ),
-                ],
-              ),
+                    Padding(
+                      padding: EdgeInsets.only(top: ScreenAdapter.height(20)),
+                      child: Stack(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('${value.price}',
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text('${value.oldPrice}',
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.lineThrough)),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
             );
           }).toList(),
         ),
