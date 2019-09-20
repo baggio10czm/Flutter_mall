@@ -66,6 +66,7 @@ class ProductContentItem {
     if (json['attr'] != null) {
       attr = new List<Attr>();
       json['attr'].forEach((v) {
+        // print(v);  //  {cate: 颜色, list: [红色, 白色, 黄色]}
         attr.add(new Attr.fromJson(v));
       });
     }
@@ -99,12 +100,14 @@ class ProductContentItem {
 class Attr {
   String cate;
   List<String> list;
+  List attrList;
 
   Attr({this.cate, this.list});
 
   Attr.fromJson(Map<String, dynamic> json) {
     cate = json['cate'];
     list = json['list'].cast<String>();
+    attrList = [];
   }
 
   Map<String, dynamic> toJson() {

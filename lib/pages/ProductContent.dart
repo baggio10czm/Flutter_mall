@@ -33,7 +33,6 @@ class _ProductContentPageState extends State<ProductContentPage> {
     print(api);
     var response = await Dio().get(api);
     var productContent = ProductContentModel.fromJson(response.data);
-    print(productContent.result);
     setState(() {
       this._productContentItem = productContent.result;
     });
@@ -84,7 +83,7 @@ class _ProductContentPageState extends State<ProductContentPage> {
             // 中间切换页面
             TabBarView(children: <Widget>[
               ProductContentFirst(this._productContentItem),
-              ProductContentSecond(),
+              ProductContentSecond(this._productContentItem),
               ProductContentThird(),
             ]),
             // 底部button区
