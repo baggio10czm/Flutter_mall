@@ -66,19 +66,48 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
-    return ListView(
-      children: <Widget>[
-        // 轮播图
-        this._swiperWidget(),
-        SizedBox(height: ScreenAdapter.height(20)),
-        this._titleWidget('猜你喜欢'),
-        SizedBox(height: ScreenAdapter.height(20)),
-        // 猜你喜欢
-        this._likeProductListWidget(),
-        this._titleWidget('热门推荐'),
-        // 热门推荐
-        this._recProductItemWidget()
-      ],
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(icon: Icon(Icons.center_focus_weak,size: 28,color: Colors.black87), onPressed: null),
+          title: InkWell(
+            child: Container(
+              width: double.infinity,
+              height: ScreenAdapter.height(68),
+              padding: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(233, 233, 233, 0.8),
+                  borderRadius: BorderRadius.circular(30)
+              ),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.search),
+                    Text('搜索',style: TextStyle(fontSize: ScreenAdapter.size(28)))
+                  ]
+              ),
+            ),
+            onTap: (){
+              Navigator.pushNamed(context, '/search');
+            },
+          ),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.message,size: 28,color: Colors.black87), onPressed: null)
+          ],
+        ),
+      body: ListView(
+        children: <Widget>[
+          // 轮播图
+          this._swiperWidget(),
+          SizedBox(height: ScreenAdapter.height(20)),
+          this._titleWidget('猜你喜欢'),
+          SizedBox(height: ScreenAdapter.height(20)),
+          // 猜你喜欢
+          this._likeProductListWidget(),
+          this._titleWidget('热门推荐'),
+          // 热门推荐
+          this._recProductItemWidget()
+        ],
+      )
     );
   }
 
@@ -91,7 +120,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           return new Image.network('${Config.domain}${pic.replaceAll('\\', '/')}',fit: BoxFit.fill);
         },
         itemCount: _focusList.length,
-        pagination: new SwiperPagination(),
+        pagination: new SwiperPagination(builder: DotSwiperPaginationBuilder(activeColor: Colors.redAccent)),
         autoplay: true,
       ));
     }else{

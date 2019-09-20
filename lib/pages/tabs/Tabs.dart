@@ -11,7 +11,7 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   PageController _controller;
 
   @override
@@ -36,35 +36,6 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
     return Scaffold(
-      appBar: this._currentIndex != 3?AppBar(
-        leading: IconButton(icon: Icon(Icons.center_focus_weak,size: 28,color: Colors.black87), onPressed: null),
-        title: InkWell(
-          child: Container(
-            width: double.infinity,
-            height: ScreenAdapter.height(68),
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(233, 233, 233, 0.8),
-              borderRadius: BorderRadius.circular(30)
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-               Icon(Icons.search),
-               Text('搜索',style: TextStyle(fontSize: ScreenAdapter.size(28)))
-              ]
-            ),
-          ),
-          onTap: (){
-            Navigator.pushNamed(context, '/search');
-          },
-        ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.message,size: 28,color: Colors.black87), onPressed: null)
-        ],
-      ):AppBar(
-        title: Text("用户中心"),
-    ),
       body: PageView(  // PageView 可以保存页面状态， 还有一种方式是  IndexedStack 简单应用可考虑使用
         controller: this._controller,
         children: _pageList,

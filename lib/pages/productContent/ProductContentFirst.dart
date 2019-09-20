@@ -59,7 +59,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                 Text("${widget._productContentItem.subTitle}",
                     style: TextStyle(color: Colors.black54,fontSize: ScreenAdapter.size(28))),
               ],
-            ),
+            )
           ),
           // 价格
           Container(
@@ -74,7 +74,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                         Text('特价'),
                         Text('￥${widget._productContentItem.price}',
                             style: TextStyle(color: Colors.red,fontSize: ScreenAdapter.size(36)))
-                      ],
+                      ]
                     )),
                 Expanded(
                     flex: 1,
@@ -85,7 +85,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                         Text('￥${widget._productContentItem.oldPrice}',
                           style: TextStyle(color: Colors.black26,fontSize: ScreenAdapter.size(26),decoration: TextDecoration.lineThrough),
                         )
-                      ],
+                      ]
                     ))
               ],
             ),
@@ -229,7 +229,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
           // StatefulBuilder 用来更新底部弹框状态 需要传递setBottomSheetStatus 下去
           return StatefulBuilder(builder: (BuildContext context, setBottomSheetStatus){
             return Container(
-              height: 400,
+              height: 300,
               child: Stack(
                 children: <Widget>[
                   ListView(

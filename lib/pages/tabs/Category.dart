@@ -62,11 +62,40 @@ class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClie
         // 计算GridView 每一项高度，用来设置GridView宽高比
     var rightItemHeight = rightItemWidth + ScreenAdapter.height(28);
 
-    return Row(
-      children: <Widget>[
-        this.leftCategoryWidget(leftWidth),
-        this.rightCategoryProductWidget(rightItemWidth, rightItemHeight)
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.center_focus_weak,size: 28,color: Colors.black87), onPressed: null),
+        title: InkWell(
+          child: Container(
+            width: double.infinity,
+            height: ScreenAdapter.height(68),
+            padding: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(233, 233, 233, 0.8),
+                borderRadius: BorderRadius.circular(30)
+            ),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.search),
+                  Text('搜索',style: TextStyle(fontSize: ScreenAdapter.size(28)))
+                ]
+            ),
+          ),
+          onTap: (){
+            Navigator.pushNamed(context, '/search');
+          },
+        ),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.message,size: 28,color: Colors.black87), onPressed: null)
+        ],
+      ),
+      body: Row(
+        children: <Widget>[
+          this.leftCategoryWidget(leftWidth),
+          this.rightCategoryProductWidget(rightItemWidth, rightItemHeight)
+        ],
+      ),
     );
   }
 
