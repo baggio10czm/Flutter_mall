@@ -1,3 +1,4 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mall/services/ScreenAdapter.dart';
 import 'productContent/ProductContentFirst.dart';
@@ -8,6 +9,8 @@ import '../widget/LoadingWidget.dart';
 import 'package:dio/dio.dart';
 import '../config/Config.dart';
 import '../mode/ProductContentModel.dart';
+// 广播引入
+import '../services/EventBus.dart';
 
 class ProductContentPage extends StatefulWidget {
   final Map arguments;
@@ -117,14 +120,22 @@ class _ProductContentPageState extends State<ProductContentPage> {
                       text: '加入购物车',
                       color: Colors.redAccent,
                       callBack: (){
-                        print('就是就是');
+                        if(this._productContentItem.attr.length > 0){
+                          eventBus.fire(ProductContentEvent('加入购物车'));
+                        }else{
+                          print('没有属性直接加入购物车');
+                        }
                       },
                     )),
                     Expanded(flex:1,child: JdButton(
                       text: '立即购买',
                       color: Colors.orangeAccent,
                       callBack: (){
-                        print('立即购买');
+                        if(this._productContentItem.attr.length > 0){
+                          eventBus.fire(ProductContentEvent('立即购买'));
+                        }else{
+                          print('没有属性直接购买');
+                        }
                       },
                     ))
                   ],

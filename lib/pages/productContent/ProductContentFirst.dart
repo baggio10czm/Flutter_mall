@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mall/services/ScreenAdapter.dart';
 import '../../widget/JdButton.dart';
 import '../../config/Config.dart';
+// 广播引入
+import '../../services/EventBus.dart';
 
 class ProductContentFirst extends StatefulWidget {
   final _productContentItem;
@@ -18,6 +20,7 @@ class ProductContentFirst extends StatefulWidget {
 class _ProductContentFirstState extends State<ProductContentFirst> with AutomaticKeepAliveClientMixin {
   List attr = [];
   String _selectAttrData ='';
+  var actionEventBus;
 
   // 在pageView 和 TabBarView子页面里继承 AutomaticKeepAliveClientMixin 设置 wantKeepAlive = true 就可以缓存页面
   @override
@@ -32,6 +35,23 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
     _makeAttrList();
     // 所选属性
     _makeSelectAttrData();
+    //监听ProductContentEvent广播
+    actionEventBus = eventBus.on<ProductContentEvent>().listen((event){
+      print(event);
+      this._attrBottomSheet();
+    });
+    // 监听所有广播 去掉  <ProductContentEvent>
+    //eventBus.on().listen((event){
+    //  print(event);
+    //});
+  }
+
+  //组件销毁时，一定要取消广播监听
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    actionEventBus.cancel();
   }
 
   @override
