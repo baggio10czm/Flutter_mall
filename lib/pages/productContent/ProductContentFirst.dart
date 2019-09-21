@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_mall/services/ScreenAdapter.dart';
+import '../../services/CartServices.dart';
+import '../../services/ScreenAdapter.dart';
 import '../../widget/JdButton.dart';
 import '../../config/Config.dart';
+import 'CartNum.dart';
 // 广播引入
 import '../../services/EventBus.dart';
 
@@ -21,6 +23,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   List attr = [];
   String _selectAttrData ='';
   var actionEventBus;
+  var _productContent;
 
   // 在pageView 和 TabBarView子页面里继承 AutomaticKeepAliveClientMixin 设置 wantKeepAlive = true 就可以缓存页面
   @override
@@ -31,7 +34,8 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   void initState() {
     // TODO: implement initState
     super.initState();
-    attr = widget._productContentItem.attr;
+    this._productContent = widget._productContentItem;
+    attr = _productContent.attr;
     _makeAttrList();
     // 所选属性
     _makeSelectAttrData();
@@ -56,7 +60,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
 
   @override
   Widget build(BuildContext context) {
-    String pic = Config.domain + widget._productContentItem.pic.toString().replaceAll('\\', '/');
+    String pic = Config.domain + _productContent.pic.toString().replaceAll('\\', '/');
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -73,10 +77,10 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("${widget._productContentItem.title}",
+                Text("${_productContent.title}",
                     style: TextStyle(color: Colors.black87,fontSize: ScreenAdapter.size(32)),),
                 SizedBox(height: ScreenAdapter.height(8)),
-                Text("${widget._productContentItem.subTitle}",
+                Text("${_productContent.subTitle}",
                     style: TextStyle(color: Colors.black54,fontSize: ScreenAdapter.size(28))),
               ],
             )
@@ -92,7 +96,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                     child: Row(
                       children: <Widget>[
                         Text('特价'),
-                        Text('￥${widget._productContentItem.price}',
+                        Text('￥${_productContent.price}',
                             style: TextStyle(color: Colors.red,fontSize: ScreenAdapter.size(36)))
                       ]
                     )),
@@ -102,7 +106,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text('原价'),
-                        Text('￥${widget._productContentItem.oldPrice}',
+                        Text('￥${_productContent.oldPrice}',
                           style: TextStyle(color: Colors.black26,fontSize: ScreenAdapter.size(26),decoration: TextDecoration.lineThrough),
                         )
                       ]
@@ -134,11 +138,11 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                   child: Row(
                     children: <Widget>[
                       Text("运费: ",style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text("满68元免运费")
+                      SizedBox(width: ScreenAdapter.width(20)),
+                      CartNum(_productContent)
                     ],
                   ),
                 ),
-                Divider(),
               ],
             ),
           )
@@ -162,9 +166,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   // 属性Widget
   List<Widget> _makeAttrWidget(setBottomSheetStatus) {
     var list = attr.map((item) {
-      return Container(
-        margin: EdgeInsets.only(top: ScreenAdapter.height(18)),
-        child: Row(
+      return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
@@ -175,8 +177,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                     style: TextStyle(fontWeight: FontWeight.w700))),
             Expanded(flex: 1, child: Wrap(children: this._attrItemWidget(item.cate,item.attrList,setBottomSheetStatus)))
           ],
-        ),
-      );
+        );
     });
     return list.toList();
   }
@@ -218,8 +219,10 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
       }
     }
     setState(() {
-      _selectAttrData = tmpList.join(',');
+      this._selectAttrData = tmpList.join(',');
     });
+    // 给选择属性赋值
+    this._productContent.selectedAttr = this._selectAttrData;
   }
 
   // 属性子项目Widget  注意 attrList 前面要+List才能map
@@ -252,9 +255,26 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
               height: 300,
               child: Stack(
                 children: <Widget>[
-                  ListView(
+                  Container(
                     padding: EdgeInsets.only(bottom: ScreenAdapter.height(76)),
-                    children: this._makeAttrWidget(setBottomSheetStatus),
+                    child: ListView(
+                        children:<Widget>[
+                          Column(
+                            children: this._makeAttrWidget(setBottomSheetStatus),
+                          ),
+                          Divider(),
+                          Container(
+                            padding: EdgeInsets.only(left: ScreenAdapter.width(20)),
+                            height: ScreenAdapter.height(66),
+                            child: Row(
+                              children: <Widget>[
+                                Text("数量: ",style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text("满68元免运费")
+                              ],
+                            ),
+                          ),
+                        ]
+                      ),
                   ),
                   Positioned(
                       bottom: 0,
@@ -274,7 +294,9 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                                     text: '加入购物车',
                                     color: Colors.redAccent,
                                     callBack: () {
-                                      print('加入购物车');
+                                      CartServices.addCart(this._productContent);
+                                      // 关闭选择属性弹框
+                                      Navigator.pop(context);
                                     },
                                   ),
                                 )),

@@ -31,7 +31,11 @@ class ProductContentItem {
   String cname;
   List<Attr> attr;
   String subTitle;
-  int salecount;
+  Object salecount;
+  // 新增商品数量
+  int count;
+  // 新增商品属性
+  String selectedAttr;
 
   ProductContentItem(
       {this.sId,
@@ -48,7 +52,10 @@ class ProductContentItem {
         this.cname,
         this.attr,
         this.subTitle,
-        this.salecount});
+        this.salecount,
+        this.count,
+        this.selectedAttr
+      });
 
   ProductContentItem.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -72,6 +79,9 @@ class ProductContentItem {
     }
     subTitle = json['sub_title'];
     salecount = json['salecount'];
+
+    count = 1;
+    selectedAttr='';
   }
 
   Map<String, dynamic> toJson() {

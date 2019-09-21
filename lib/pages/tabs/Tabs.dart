@@ -11,7 +11,7 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 2;
+  int _currentIndex = 0;
   PageController _controller;
 
   @override

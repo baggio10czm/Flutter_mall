@@ -3,7 +3,7 @@ import '../Cart/CartItem.dart';
 import '../Cart/CartNumProviderTest.dart';
 import 'package:provider/provider.dart';
 import '../../provider/Counter.dart';
-import '../../provider/Cart.dart';
+import '../../provider/CartProviderTest.dart';
 
 class CartPage extends StatefulWidget {
   @override
