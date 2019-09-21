@@ -139,7 +139,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                     children: <Widget>[
                       Text("运费: ",style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(width: ScreenAdapter.width(20)),
-                      CartNum(_productContent)
+                      Text("满68元免运费")
                     ],
                   ),
                 ),
@@ -269,7 +269,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                             child: Row(
                               children: <Widget>[
                                 Text("数量: ",style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text("满68元免运费")
+                                CartNum(_productContent)
                               ],
                             ),
                           ),
@@ -296,7 +296,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                                     callBack: () {
                                       CartServices.addCart(this._productContent);
                                       // 关闭选择属性弹框
-                                      Navigator.pop(context);
+                                      Navigator.of(context).pop();
                                     },
                                   ),
                                 )),

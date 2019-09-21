@@ -13,6 +13,7 @@ class CartServices {
     data['id'] = item.sId;
     data['title'] = item.title;
     data['price'] = item.price;
+    data['count'] = item.count;
     data['selectedAttr'] = item.selectedAttr;
     data['pic'] = item.pic;
     //是否选中
