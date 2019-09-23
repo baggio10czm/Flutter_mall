@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../services/ScreenAdapter.dart';
+import 'package:provider/provider.dart';
+import '../../provider/Cart.dart';
 
 class CartNum extends StatefulWidget {
-
   final Map _cartItem;
   CartNum(this._cartItem,{Key key}):super(key:key);
   @override
@@ -10,8 +11,17 @@ class CartNum extends StatefulWidget {
 }
 
 class _CartNumState extends State<CartNum> {
+  Map _cartItem;
+  Cart cartProvider;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    this._cartItem = widget._cartItem;
+  }
   @override
   Widget build(BuildContext context) {
+    this.cartProvider = Provider.of<Cart>(context);
     return Container(
       width: ScreenAdapter.width(170),
       decoration: BoxDecoration(
@@ -30,7 +40,10 @@ class _CartNumState extends State<CartNum> {
   Widget _leftBtn(){
     return InkWell(
       onTap: (){
-        print('-');
+        if(_cartItem['count']>1){
+          _cartItem['count']--;
+          cartProvider.itemCountChange();
+        }
       },
       child: Container(
         width: ScreenAdapter.width(48),
@@ -43,7 +56,8 @@ class _CartNumState extends State<CartNum> {
   // 右侧按钮
   Widget _rightBtn(){
     return InkWell(onTap: (){
-      print('+++');
+      _cartItem['count']++;
+      cartProvider.itemCountChange();
     },child:Container(
       width: ScreenAdapter.width(48),
       height: ScreenAdapter.height(48),
@@ -67,7 +81,7 @@ class _CartNumState extends State<CartNum> {
           ),
         )
       ),
-      child: Text('${ widget._cartItem['count']}'),
+      child: Text('${ _cartItem['count'] }'),
     );
   }
 

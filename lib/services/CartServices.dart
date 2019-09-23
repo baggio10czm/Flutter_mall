@@ -1,6 +1,5 @@
 import 'dart:convert';
 import '../config/Config.dart';
-
 import 'Storage.dart';
 
 class CartServices {
@@ -13,7 +12,6 @@ class CartServices {
     // 没有数据会报错，所以要用try...catch
     try {
       var cartListData = json.decode(await Storage.getString('cartList'));
-      print(cartListData);
 
       // 有数据时，判断当前数据有不有keyword,有的话不处理
       bool hasData = cartListData.any((value) {

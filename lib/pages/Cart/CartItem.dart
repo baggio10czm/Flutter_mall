@@ -13,6 +13,7 @@ class CartItem extends StatefulWidget {
 
 class _CartItemState extends State<CartItem> {
   Map _cartItem;
+  Cart cartProvider;
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
+    this.cartProvider = Provider.of<Cart>(context);
     return Container(
       padding: EdgeInsets.all(5),
       height: ScreenAdapter.height(200),
@@ -37,8 +39,9 @@ class _CartItemState extends State<CartItem> {
         children: <Widget>[
           Container(
             width: ScreenAdapter.width(60),
-            child: Checkbox(value: true, onChanged: (value){
-              print(value);
+            child: Checkbox(value: _cartItem['checked'], onChanged: (value){
+              _cartItem['checked'] = !_cartItem['checked'];
+              cartProvider.itemChange();
             },activeColor: Colors.pink,),
           ),
           Container(

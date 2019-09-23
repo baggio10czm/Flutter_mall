@@ -26,6 +26,7 @@ class _CartPageState extends State<CartPage> {
       body: cartProvider.carList.length>0 ? Stack(
         children: <Widget>[
           ListView(
+            padding: EdgeInsets.only(bottom: ScreenAdapter.height(88)),
             children: cartProvider.carList.map((item){
               return CartItem(item);
             }).toList()
@@ -75,8 +76,8 @@ class _CartPageState extends State<CartPage> {
                               children: <Widget>[
                                 Container(
                                   width: ScreenAdapter.width(60),
-                                  child:Checkbox(value: true, activeColor: Colors.pink, onChanged: (value){
-                                    print('=22');
+                                  child:Checkbox(value: cartProvider.isCheckedAll, activeColor: Colors.pink, onChanged: (value){
+                                    cartProvider.checkAll(value);
                                   }),
                                 ),
                                 Text('全选')

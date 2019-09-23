@@ -63,8 +63,9 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
 
   @override
   Widget build(BuildContext context) {
-    String pic = Config.domain + _productContent.pic.toString().replaceAll('\\', '/');
     this.cartProvider = Provider.of<Cart>(context);
+
+    String pic = Config.domain + _productContent.pic.toString().replaceAll('\\', '/');
 
     return Container(
       padding: EdgeInsets.fromLTRB(
