@@ -5,15 +5,24 @@ import 'package:provider/provider.dart';
 import '../../provider/Cart.dart';
 
 class CartItem extends StatefulWidget {
+  final Map _cartItem;
+  CartItem(this._cartItem,{Key key}):super(key:key);
   @override
   _CartItemState createState() => _CartItemState();
 }
 
 class _CartItemState extends State<CartItem> {
+  Map _cartItem;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _cartItem = widget._cartItem;
+  }
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
-    var cartProvider = Provider.of<Cart>(context);
     return Container(
       padding: EdgeInsets.all(5),
       height: ScreenAdapter.height(200),
@@ -34,7 +43,7 @@ class _CartItemState extends State<CartItem> {
           ),
           Container(
             width: ScreenAdapter.width(160),
-            child: Image.network('https://www.itying.com/images/flutter/list2.jpg'),
+            child: Image.network('${_cartItem['pic']}'),
           ),
           Expanded(
             flex: 1,
@@ -42,17 +51,19 @@ class _CartItemState extends State<CartItem> {
               padding: EdgeInsets.all(10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('商品-11111111阿萨是否低洼瞧得起我的青蛙打网球请问大师的阿萨伟大萨乌丁阿斯顿',maxLines: 2),
+                  Text('${_cartItem['title']}',maxLines: 2),
+                  Text('${_cartItem['selectedAttr']}',maxLines: 1),
                   Stack(
                     children: <Widget>[
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('￥${1220}',style: TextStyle(color: Colors.redAccent),),
+                        child: Text('￥${_cartItem['price']}',style: TextStyle(color: Colors.redAccent),),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: CartNum(),
+                        child: CartNum(_cartItem),
                       )
                     ],
                   )

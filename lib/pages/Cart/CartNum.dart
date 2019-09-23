@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../../services/ScreenAdapter.dart';
 
 class CartNum extends StatefulWidget {
+
+  final Map _cartItem;
+  CartNum(this._cartItem,{Key key}):super(key:key);
   @override
   _CartNumState createState() => _CartNumState();
 }
@@ -64,7 +67,7 @@ class _CartNumState extends State<CartNum> {
           ),
         )
       ),
-      child: Text('1'),
+      child: Text('${ widget._cartItem['count']}'),
     );
   }
 

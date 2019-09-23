@@ -22,7 +22,7 @@ class _CartPageState extends State<CartPage> {
           SizedBox(height: 20),
           Center(child: Text('统计数量: ${countProvider.count}')),
           Divider(),
-          CartItem(),
+//          CartItem(),
           Divider(height: 40),
           CartNumTest(),
         ],

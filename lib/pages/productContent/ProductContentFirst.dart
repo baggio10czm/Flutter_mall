@@ -7,6 +7,8 @@ import '../../services/ScreenAdapter.dart';
 import '../../widget/JdButton.dart';
 import '../../config/Config.dart';
 import 'CartNum.dart';
+import 'package:provider/provider.dart';
+import '../../provider/Cart.dart';
 // 广播引入
 import '../../services/EventBus.dart';
 
@@ -24,6 +26,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   String _selectAttrData ='';
   var actionEventBus;
   var _productContent;
+  Cart cartProvider;
 
   // 在pageView 和 TabBarView子页面里继承 AutomaticKeepAliveClientMixin 设置 wantKeepAlive = true 就可以缓存页面
   @override
@@ -61,6 +64,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   @override
   Widget build(BuildContext context) {
     String pic = Config.domain + _productContent.pic.toString().replaceAll('\\', '/');
+    this.cartProvider = Provider.of<Cart>(context);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -293,10 +297,12 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                                   child: JdButton(
                                     text: '加入购物车',
                                     color: Colors.redAccent,
-                                    callBack: () {
-                                      CartServices.addCart(this._productContent);
+                                    callBack: () async{
+                                      await CartServices.addCart(this._productContent);
                                       // 关闭选择属性弹框
                                       Navigator.of(context).pop();
+                                      // 调用 Provider 更新数据
+                                      cartProvider.updateCartList();
                                     },
                                   ),
                                 )),

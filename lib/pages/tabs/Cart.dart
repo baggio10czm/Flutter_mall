@@ -23,14 +23,12 @@ class _CartPageState extends State<CartPage> {
           IconButton(icon: Icon(Icons.launch), onPressed: null)
         ],
       ),
-      body: Stack(
+      body: cartProvider.carList.length>0 ? Stack(
         children: <Widget>[
           ListView(
-            children: <Widget>[
-              CartItem(),
-              CartItem(),
-              CartItem()
-            ],
+            children: cartProvider.carList.map((item){
+              return CartItem(item);
+            }).toList()
           ),
           Positioned(bottom:0,width:ScreenAdapter.width(750),child: Container(
             width: double.infinity,
@@ -99,7 +97,7 @@ class _CartPageState extends State<CartPage> {
 
           ))
         ],
-      ),
+      ):Text('毫无数据?'),
     );
   }
 }

@@ -9,6 +9,9 @@ import '../widget/LoadingWidget.dart';
 import 'package:dio/dio.dart';
 import '../config/Config.dart';
 import '../mode/ProductContentModel.dart';
+import 'package:provider/provider.dart';
+import '../provider/Cart.dart';
+import '../services/CartServices.dart';
 // 广播引入
 import '../services/EventBus.dart';
 
@@ -43,6 +46,7 @@ class _ProductContentPageState extends State<ProductContentPage> {
 
   @override
   Widget build(BuildContext context) {
+    var cartProvider = Provider.of<Cart>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -119,11 +123,13 @@ class _ProductContentPageState extends State<ProductContentPage> {
                     Expanded(flex:1,child: JdButton(
                       text: '加入购物车',
                       color: Colors.redAccent,
-                      callBack: (){
+                      callBack: ()async{
                         if(this._productContentItem.attr.length > 0){
                           eventBus.fire(ProductContentEvent('加入购物车'));
                         }else{
-                          print('没有属性直接加入购物车');
+                          await CartServices.addCart(this._productContentItem);
+                          // 调用 Provider 更新数据
+                          cartProvider.updateCartList();
                         }
                       },
                     )),
