@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../provider/Cart.dart';
 // 广播引入
 import '../../services/EventBus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductContentFirst extends StatefulWidget {
   final _productContentItem;
@@ -159,6 +160,8 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
   // 制作 attr 数据集合
   void _makeAttrList(){
     for (var i = 0; i < attr.length; ++i) {
+      // TabBar切换会触发iniStatus 避免数据重复添加 先清空数组 用clear()
+      attr[i].attrList.clear();
       for (var j = 0; j < attr[i].list.length; ++j) {
         attr[i].attrList.add({
           'title': attr[i].list[j],
@@ -240,7 +243,9 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
               this._makeSelectAttrData();
             },
             child: Chip(
-                label: Text('${item['title']}'),
+                label: Text('${item['title']}',style: TextStyle(
+                  color: item['checked']? Colors.white: Colors.black87
+                ),),
                 padding: EdgeInsets.all(6),
                 backgroundColor: item['checked'] ? Colors.redAccent:Colors.black12
             )
@@ -256,6 +261,8 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
         builder: (context) {
           // StatefulBuilder 用来更新底部弹框状态 需要传递setBottomSheetStatus 下去
           return StatefulBuilder(builder: (BuildContext context, setBottomSheetStatus){
+            // 加GestureDetector手势检测, 解决弹出层点击消时的问题(不加好像也没问题,就没加了),配置behavior 解决穿透问题
+            // GestureDetector(behavior: HitTestBehavior.opaque,onTap: (){})
             return Container(
               height: 300,
               child: Stack(
@@ -304,6 +311,11 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                                       Navigator.of(context).pop();
                                       // 调用 Provider 更新数据
                                       cartProvider.updateCartList();
+                                      Fluttertoast.showToast(
+                                          msg: "已加入购物车",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                      );
                                     },
                                   ),
                                 )),

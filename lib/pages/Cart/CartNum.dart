@@ -17,15 +17,17 @@ class _CartNumState extends State<CartNum> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    this._cartItem = widget._cartItem;
+    // this._cartItem = widget._cartItem;
   }
   @override
   Widget build(BuildContext context) {
     this.cartProvider = Provider.of<Cart>(context);
+    // 必须放在build里 不然删除,重新渲染页面时不会走 initState,会导致数据错误
+    this._cartItem = widget._cartItem;
     return Container(
-      width: ScreenAdapter.width(170),
+      width: ScreenAdapter.width(172),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black12)
+        border: Border.all(width:ScreenAdapter.width(2),color: Colors.black12)
       ),
       child: Row(
         children: <Widget>[
@@ -74,9 +76,11 @@ class _CartNumState extends State<CartNum> {
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
+            width:ScreenAdapter.width(2),
             color: Colors.black12
           ),
           right: BorderSide(
+              width:ScreenAdapter.width(2),
               color: Colors.black12
           ),
         )

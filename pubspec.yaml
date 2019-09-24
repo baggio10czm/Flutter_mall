@@ -30,6 +30,7 @@ dependencies:
   flutter_inappbrowser: ^1.2.1
   provider: ^3.1.0
   event_bus: ^1.1.0
+  fluttertoast: ^3.1.3
 
 dev_dependencies:
   flutter_test:

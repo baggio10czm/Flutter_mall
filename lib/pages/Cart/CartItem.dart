@@ -19,15 +19,17 @@ class _CartItemState extends State<CartItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _cartItem = widget._cartItem;
+    //  _cartItem = widget._cartItem;
   }
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
+    // 必须放在build里 不然删除,重新渲染页面时不会走 initState,会导致数据错误
+    _cartItem = widget._cartItem;
     this.cartProvider = Provider.of<Cart>(context);
     return Container(
       padding: EdgeInsets.all(5),
-      height: ScreenAdapter.height(200),
+      height: ScreenAdapter.height(220),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(

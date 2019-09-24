@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import '../config/Config.dart';
 import 'Storage.dart';
 
@@ -46,7 +47,12 @@ class CartServices {
     final Map data = new Map<String, dynamic>();
     data['_id'] = item.sId;
     data['title'] = item.title;
-    data['price'] = item.price;
+    // 服务端价格格式不一致,要处理一下把是字符串的价格改变成 double
+    if(item.price is int || item.price is double){
+      data['price'] = item.price;
+    }else {
+      data['price'] = double.parse(item.price);
+    }
     data['count'] = item.count;
     data['selectedAttr'] = item.selectedAttr;
     data['pic'] = pic;

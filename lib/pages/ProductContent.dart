@@ -12,6 +12,7 @@ import '../mode/ProductContentModel.dart';
 import 'package:provider/provider.dart';
 import '../provider/Cart.dart';
 import '../services/CartServices.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // 广播引入
 import '../services/EventBus.dart';
 
@@ -88,7 +89,9 @@ class _ProductContentPageState extends State<ProductContentPage> {
         body: (this._productContentItem??null) != null?Stack(
           children: <Widget>[
             // 中间切换页面
-            TabBarView(children: <Widget>[
+            TabBarView(
+              //禁止滑动切换页面,优化体验
+              physics: NeverScrollableScrollPhysics(), children: <Widget>[
               ProductContentFirst(this._productContentItem),
               ProductContentSecond(this._productContentItem),
               ProductContentThird(),
@@ -110,16 +113,18 @@ class _ProductContentPageState extends State<ProductContentPage> {
                 ),
                 child: Row(
                   children: <Widget>[
-                    Container(
+                    InkWell(onTap: (){
+                      Navigator.pushNamed(context, '/cart');
+                    },child: Container(
                       width: ScreenAdapter.width(180),
                       padding: EdgeInsets.only(top: ScreenAdapter.height(10)),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.shopping_cart),
-                          Text('购物车')
+                          Icon(Icons.shopping_cart,size: ScreenAdapter.size(36),),
+                          Text('购物车',style: TextStyle(fontSize: ScreenAdapter.size(24)))
                         ],
                       ),
-                    ),
+                    )),
                     Expanded(flex:1,child: JdButton(
                       text: '加入购物车',
                       color: Colors.redAccent,
@@ -130,6 +135,11 @@ class _ProductContentPageState extends State<ProductContentPage> {
                           await CartServices.addCart(this._productContentItem);
                           // 调用 Provider 更新数据
                           cartProvider.updateCartList();
+                          Fluttertoast.showToast(
+                            msg: "已加入购物车",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
                         }
                       },
                     )),

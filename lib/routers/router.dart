@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/tabs/Cart.dart';
 import '../pages/tabs/Tabs.dart';
 import '../pages/Search.dart';
 import '../pages/ProductList.dart';
@@ -9,6 +10,7 @@ import '../pages/ProductContent.dart';
 final routes = {
   '/': (context) => Tabs(),
   '/search': (context) => SearchPage(),
+  '/cart': (context) => CartPage(),
   '/productList': (context,{arguments}) => ProductListPage(arguments:arguments),
   '/productContent': (context,{arguments}) => ProductContentPage(arguments:arguments),
 };
