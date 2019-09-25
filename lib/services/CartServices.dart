@@ -8,7 +8,6 @@ class CartServices {
   static addCart(item)async{
     // 把对象转换成Map类型的数据
     item = CartServices.formatCartData(item);
-    print(item);
 
     // 没有数据会报错，所以要用try...catch
     try {

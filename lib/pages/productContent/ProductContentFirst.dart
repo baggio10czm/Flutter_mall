@@ -40,12 +40,13 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
     super.initState();
     this._productContent = widget._productContentItem;
     attr = _productContent.attr;
+    // 制作属性数据
     _makeAttrList();
     // 所选属性
     _makeSelectAttrData();
     //监听ProductContentEvent广播
     actionEventBus = eventBus.on<ProductContentEvent>().listen((event){
-      print(event);
+      print('触发ProductContentFirst的方法');
       this._attrBottomSheet();
     });
     // 监听所有广播 去掉  <ProductContentEvent>
@@ -69,11 +70,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
     String pic = Config.domain + _productContent.pic.toString().replaceAll('\\', '/');
 
     return Container(
-      padding: EdgeInsets.fromLTRB(
-          ScreenAdapter.width(18),
-          ScreenAdapter.width(18),
-          ScreenAdapter.width(18),
-          ScreenAdapter.width(88)),
+      padding: EdgeInsets.fromLTRB(ScreenAdapter.width(18), ScreenAdapter.width(18), ScreenAdapter.width(18), ScreenAdapter.width(88)),
       child: ListView(
         children: <Widget>[
           // 图
@@ -157,7 +154,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
     );
   }
 
-  // 制作 attr 数据集合
+  // 制作 attr 数据集合 + checked 属性方便数据使用,统计
   void _makeAttrList(){
     for (var i = 0; i < attr.length; ++i) {
       // TabBar切换会触发iniStatus 避免数据重复添加 先清空数组 用clear()
@@ -306,6 +303,7 @@ class _ProductContentFirstState extends State<ProductContentFirst> with Automati
                                     text: '加入购物车',
                                     color: Colors.redAccent,
                                     callBack: () async{
+                                      // 把商品添加到缓存中
                                       await CartServices.addCart(this._productContent);
                                       // 关闭选择属性弹框
                                       Navigator.of(context).pop();

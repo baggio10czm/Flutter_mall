@@ -99,7 +99,7 @@ class ProductContentItem {
     data['content'] = this.content;
     data['cname'] = this.cname;
     if (this.attr != null) {
-      data['attr'] = this.attr.map((v) => v.toJson()).toList();
+      data['attr'] = this.attr.map((item) => item.toJson()).toList();
     }
     data['sub_title'] = this.subTitle;
     data['salecount'] = this.salecount;

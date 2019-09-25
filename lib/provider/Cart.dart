@@ -7,7 +7,7 @@ class Cart with ChangeNotifier {
   bool _isCheckedAll = false;
   double _allPrice  = 0;
 
-  // 获取状态
+  // 读取接口
   List get carList => _carList;
   bool get isCheckedAll => _isCheckedAll;
   double get allPrice => _allPrice;
@@ -16,6 +16,7 @@ class Cart with ChangeNotifier {
     this.init();
   }
 
+  // 重新计算更新
   init() async {
     try {
       var cartListData = json.decode(await Storage.getString('cartList'));
@@ -23,8 +24,9 @@ class Cart with ChangeNotifier {
     } catch (err) {
       this._carList = [];
     }
-    //判断全选的状态
+    // 判断全选的状态
     this._isCheckedAll = this.isCheckAll();
+    // 计算总价
     this.computeAllPrice();
     notifyListeners();
   }
@@ -54,14 +56,14 @@ class Cart with ChangeNotifier {
       return item['checked'] == false;
     }));
   }
-  //监听每一项的点击事件,每次_carList改变都需要更新缓存
+  // 监听每一项的点击事件,每次_carList改变都需要更新缓存
   itemChange(){
     this._isCheckedAll = this.isCheckAll();
     Storage.setString('cartList', json.encode(_carList));
     this.computeAllPrice();
     notifyListeners();
   }
-  //计算总价
+  // 计算总价
   computeAllPrice(){
     double tempAllPrice = 0;
     for (var i = 0; i < carList.length; ++i) {

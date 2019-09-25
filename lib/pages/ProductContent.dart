@@ -86,7 +86,7 @@ class _ProductContentPageState extends State<ProductContentPage> {
             })
           ],
         ),
-        body: (this._productContentItem??null) != null?Stack(
+        body: this._productContentItem?.sId != null?Stack(
           children: <Widget>[
             // 中间切换页面
             TabBarView(
@@ -122,16 +122,18 @@ class _ProductContentPageState extends State<ProductContentPage> {
                         children: <Widget>[
                           Icon(Icons.shopping_cart,size: ScreenAdapter.size(36),),
                           Text('购物车',style: TextStyle(fontSize: ScreenAdapter.size(24)))
-                        ],
-                      ),
+                        ]
+                      )
                     )),
                     Expanded(flex:1,child: JdButton(
                       text: '加入购物车',
                       color: Colors.redAccent,
-                      callBack: ()async{
+                      callBack: () async {
                         if(this._productContentItem.attr.length > 0){
+                          // 商品有属性,就弹起 ProductContentFirst 的底部属性弹框
                           eventBus.fire(ProductContentEvent('加入购物车'));
                         }else{
+                          // 把商品添加到缓存中
                           await CartServices.addCart(this._productContentItem);
                           // 调用 Provider 更新数据
                           cartProvider.updateCartList();
@@ -141,13 +143,14 @@ class _ProductContentPageState extends State<ProductContentPage> {
                             gravity: ToastGravity.CENTER,
                           );
                         }
-                      },
+                      }
                     )),
                     Expanded(flex:1,child: JdButton(
                       text: '立即购买',
                       color: Colors.orangeAccent,
                       callBack: (){
                         if(this._productContentItem.attr.length > 0){
+                          // 商品有属性,就弹起 ProductContentFirst 的底部属性弹框
                           eventBus.fire(ProductContentEvent('立即购买'));
                         }else{
                           print('没有属性直接购买');

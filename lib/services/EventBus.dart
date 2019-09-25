@@ -7,5 +7,5 @@ class ProductContentEvent{
 
   ProductContentEvent(String str){
     this.str = str;
-}
+  }
 }

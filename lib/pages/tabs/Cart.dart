@@ -21,7 +21,7 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         title: Text('购物车'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.launch), onPressed:(){
+          IconButton(icon: Icon(this._isEdit?Icons.delete_forever:Icons.delete), onPressed:(){
             setState(() {
               this._isEdit = !this._isEdit;
             });
@@ -89,7 +89,7 @@ class _CartPageState extends State<CartPage> {
                                 this._isEdit==false ? Text('合计:'):Text(''),
                                 this._isEdit==false ? Text('${cartProvider.allPrice}',style: TextStyle(color: Colors.redAccent, fontSize: ScreenAdapter.size(32))):Text('')
                               ],
-                            ),
+                            )
                   ),
                   Container(
                     width: ScreenAdapter.width(170),
@@ -107,10 +107,9 @@ class _CartPageState extends State<CartPage> {
                   )
                 ],
               ),
-
           ))
         ],
-      ):Text('毫无数据?'),
+      ):Center(child: Text('毫无数据?')),
     );
   }
 }
