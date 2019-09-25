@@ -4,6 +4,11 @@ import '../pages/tabs/Tabs.dart';
 import '../pages/Search.dart';
 import '../pages/ProductList.dart';
 import '../pages/ProductContent.dart';
+import '../pages/Login.dart';
+import '../pages/RegisterFirst.dart';
+import '../pages/RegisterSecond.dart';
+import '../pages/RegisterThird.dart';
+import '../pages/forgetPassword.dart';
 
 
 //配置路由
@@ -13,6 +18,11 @@ final routes = {
   '/cart': (context) => CartPage(),
   '/productList': (context,{arguments}) => ProductListPage(arguments:arguments),
   '/productContent': (context,{arguments}) => ProductContentPage(arguments:arguments),
+  '/login': (context) => LoginPage(),
+  '/registerFirst': (context) => RegisterFirstPage(),
+  '/registerSecond': (context) => RegisterSecondPage(),
+  '/registerThird': (context) => RegisterThirdPage(),
+  '/forgetPassword': (context) => ForgetPasswordPage(),
 };
 
 // ignore: strong_mode_top_level_function_literal_block
