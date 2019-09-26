@@ -8,7 +8,8 @@ import '../pages/Login.dart';
 import '../pages/RegisterFirst.dart';
 import '../pages/RegisterSecond.dart';
 import '../pages/RegisterThird.dart';
-import '../pages/forgetPassword.dart';
+import '../pages/ForgetPassword.dart';
+import '../pages/Checkout.dart';
 
 
 //配置路由
@@ -23,6 +24,7 @@ final routes = {
   '/registerSecond': (context,{arguments}) => RegisterSecondPage(arguments:arguments),
   '/registerThird': (context,{arguments}) => RegisterThirdPage(arguments:arguments),
   '/forgetPassword': (context) => ForgetPasswordPage(),
+  '/checkout': (context) => CheckoutPage(),
 };
 
 // ignore: strong_mode_top_level_function_literal_block

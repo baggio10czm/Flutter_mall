@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mall/widget/JdButton.dart';
 import '../../services/UserServices.dart';
 import '../../services/ScreenAdapter.dart';
-import 'package:provider/provider.dart';
-import '../../provider/Counter.dart';
 import '../../services/EventBus.dart';
 
 class UserPage extends StatefulWidget {
@@ -39,7 +37,6 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    Counter countProvider = Provider.of<Counter>(context);
     return Scaffold(
       //appBar: AppBar(
       //  title: Text('用户'),

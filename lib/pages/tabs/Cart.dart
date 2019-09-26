@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mall/services/CartServices.dart';
+import 'package:flutter_mall/services/UserServices.dart';
 import '../../services/ScreenAdapter.dart';
 import '../Cart/CartItem.dart';
 import 'package:provider/provider.dart';
-//import '../../provider/Counter.dart';
 import '../../provider/Cart.dart';
+import '../../provider/Checkout.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -12,11 +17,12 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   bool _isEdit = false;
+  Checkout checkoutProvider;
   @override
   Widget build(BuildContext context) {
     ScreenAdapter.init(context);
-//    Counter countProvider = Provider.of<Counter>(context);
     Cart cartProvider = Provider.of<Cart>(context);
+    checkoutProvider = Provider.of<Checkout>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('购物车'),
@@ -96,9 +102,7 @@ class _CartPageState extends State<CartPage> {
                     child: this._isEdit==false? RaisedButton(
                         child: Text('结算',style: TextStyle(color: Colors.white)),
                         color: Colors.redAccent,
-                        onPressed: (){
-                          print('结算');
-                        }):RaisedButton(
+                        onPressed: doCheckout):RaisedButton(
                         child: Text('删除',style: TextStyle(color: Colors.white)),
                         color: Colors.redAccent,
                         onPressed: (){
@@ -111,5 +115,33 @@ class _CartPageState extends State<CartPage> {
         ],
       ):Center(child: Text('毫无数据?')),
     );
+  }
+
+  void doCheckout() async{
+    // 获取购物车选中的数据
+    List checkoutData = await CartServices.getCheckoutData();
+    // 保存购物车数据到 provider
+    checkoutProvider.changeCheckoutListData(checkoutData);
+    // 判断是否有选中的商品
+    if(checkoutData.length>0){
+      // 判断用户是否登录,保存购物车选中数据
+      // 异步方法记得加 await
+      if(await UserServices.getUserLoginState()){
+        Navigator.pushNamed(context, '/checkout');
+      }else{
+        Fluttertoast.showToast(
+          msg: "先登录",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+        );
+        Navigator.pushNamed(context, '/login');
+      }
+    }else{
+      Fluttertoast.showToast(
+        msg: "没有选中商品",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 }
