@@ -20,8 +20,8 @@ final routes = {
   '/productContent': (context,{arguments}) => ProductContentPage(arguments:arguments),
   '/login': (context) => LoginPage(),
   '/registerFirst': (context) => RegisterFirstPage(),
-  '/registerSecond': (context) => RegisterSecondPage(),
-  '/registerThird': (context) => RegisterThirdPage(),
+  '/registerSecond': (context,{arguments}) => RegisterSecondPage(arguments:arguments),
+  '/registerThird': (context,{arguments}) => RegisterThirdPage(arguments:arguments),
   '/forgetPassword': (context) => ForgetPasswordPage(),
 };
 
