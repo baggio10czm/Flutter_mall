@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import '../provider/Checkout.dart';
 import 'package:provider/provider.dart';
 import '../services/ScreenAdapter.dart';
+import 'package:dio/dio.dart';
+import '../config/Config.dart';
+import '../services/UserServices.dart';
+import '../services/SignServices.dart';
+import '../services/EventBus.dart';
 
 class CheckoutPage extends StatefulWidget {
   @override
@@ -9,6 +14,39 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  List defaultAddress = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getDefaultAddress();
+    //监听广播
+    eventBus.on<CheckoutEvent>().listen((event){
+      print(event.str);
+      this._getDefaultAddress();
+    });
+  }
+
+  void _getDefaultAddress() async{
+    List userInfo = await UserServices.getUserInfo();
+
+    var tempJson = {
+      'uid': userInfo[0]['_id'],
+      'salt': userInfo[0]['salt'],
+    };
+
+    var sign = SignServices.getSign(tempJson);
+
+    var api = Config.domain + 'api/oneAddressList?uid=${userInfo[0]['_id']}&sign=$sign';
+
+    var response = await Dio().get(api);
+    print(response);
+    defaultAddress = response.data['result'];
+    setState(() {
+      this.defaultAddress = response.data['result'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Checkout checkoutProvider = Provider.of<Checkout>(context);
@@ -21,14 +59,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
               Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(ScreenAdapter.width(20)),
-                child: ListTile(
+                child: this.defaultAddress.length>0?ListTile(
 //              leading: Icon(Icons.add_location),
-                  title: Column(crossAxisAlignment:CrossAxisAlignment.start,children: <Widget>[
-                    Text('张三 15988865421'),
-                    SizedBox(height: 10),
-                    Text('广西省桂林市朝阳高新开发区')
+                  title: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+                    Text("${this.defaultAddress[0]['name']} ${this.defaultAddress[0]['phone']}"),
+                    SizedBox(height: ScreenAdapter.height(20)),
+                    Text("${this.defaultAddress[0]['address']}"),
                   ],),
                   trailing: Icon(Icons.navigate_next),
+                  onTap: (){
+                    Navigator.pushNamed(context, '/addressList');
+                  },
+                ):ListTile(
+//              leading: Icon(Icons.add_location),
+                  title: Text('添加收货地址'),
+                  trailing: Icon(Icons.navigate_next),
+                  onTap: (){
+                    Navigator.pushNamed(context, '/addressAdd');
+                  },
                 ),
               ),
               SizedBox(height: 20),

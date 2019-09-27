@@ -10,6 +10,9 @@ import '../pages/RegisterSecond.dart';
 import '../pages/RegisterThird.dart';
 import '../pages/ForgetPassword.dart';
 import '../pages/Checkout.dart';
+import '../pages/Address/AddressAdd.dart';
+import '../pages/Address/AddressEdit.dart';
+import '../pages/Address/AddressList.dart';
 
 
 //配置路由
@@ -25,6 +28,9 @@ final routes = {
   '/registerThird': (context,{arguments}) => RegisterThirdPage(arguments:arguments),
   '/forgetPassword': (context) => ForgetPasswordPage(),
   '/checkout': (context) => CheckoutPage(),
+  '/addressAdd': (context) => AddressAddPage(),
+  '/addressEdit': (context,{arguments}) => AddressEditPage(arguments:arguments),
+  '/addressList': (context) => AddressListPage(),
 };
 
 // ignore: strong_mode_top_level_function_literal_block
