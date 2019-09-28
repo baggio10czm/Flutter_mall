@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/addressList',
+      initialRoute: '/checkout',
       onGenerateRoute: onGenerateRoute,
       theme: ThemeData(
           primaryColor: Colors.white, backgroundColor: Colors.white),

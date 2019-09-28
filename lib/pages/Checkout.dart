@@ -55,6 +55,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       body: Stack(
         children: <Widget>[
           ListView(
+            padding: EdgeInsets.only(bottom: ScreenAdapter.height(76)),
             children: <Widget>[
               Container(
                 color: Colors.white,
