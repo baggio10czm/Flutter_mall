@@ -6,7 +6,7 @@ import 'Storage.dart';
 class CartServices {
 
   static addCart(item)async{
-    // 把对象转换成Map类型的数据
+    // 把对象转换成Map类型的数据,并过滤
     item = CartServices.formatCartData(item);
 
     // 没有数据会报错，所以要用try...catch
@@ -40,7 +40,7 @@ class CartServices {
 
   }
 
-  // 过滤数据
+  // 把对象转换成Map类型的数据,并过滤
   static formatCartData(item){
     String pic = Config.domain +  item.pic.toString().replaceAll('\\', '/');
     final Map data = new Map<String, dynamic>();

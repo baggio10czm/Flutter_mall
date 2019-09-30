@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../provider/Checkout.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,9 @@ import '../config/Config.dart';
 import '../services/UserServices.dart';
 import '../services/SignServices.dart';
 import '../services/EventBus.dart';
+import '../services/CheckoutServices.dart';
+import '../provider/Cart.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckoutPage extends StatefulWidget {
   @override
@@ -22,7 +27,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     _getDefaultAddress();
     //监听广播
     eventBus.on<CheckoutEvent>().listen((event){
-      print(event.str);
       this._getDefaultAddress();
     });
   }
@@ -49,6 +53,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
+    Cart cartProvider = Provider.of<Cart>(context);
     Checkout checkoutProvider = Provider.of<Checkout>(context);
     return Scaffold(
       appBar: AppBar(title: Text('结算')),
@@ -61,7 +66,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 color: Colors.white,
                 padding: EdgeInsets.all(ScreenAdapter.width(20)),
                 child: this.defaultAddress.length>0?ListTile(
-//              leading: Icon(Icons.add_location),
+                  leading: Icon(Icons.add_location),
                   title: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Text("${this.defaultAddress[0]['name']} ${this.defaultAddress[0]['phone']}"),
                     SizedBox(height: ScreenAdapter.height(20)),
@@ -110,8 +115,50 @@ class _CheckoutPageState extends State<CheckoutPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('总价:￥1230'),
-                RaisedButton(color: Colors.redAccent,child: Text('立即下单',style: TextStyle(color: Colors.white),),onPressed: (){
-                  print('224');
+                RaisedButton(color: Colors.redAccent,child: Text('立即下单',style: TextStyle(color: Colors.white),),onPressed: ()async{
+                  // 先判断是否有收货地址
+                  if(this.defaultAddress.length>0){
+                    List userInfo = await UserServices.getUserInfo();
+                    // 商品总价保留一位小数,转成字符串类型
+                    var allPrice = CheckoutServices.getAllPrice(checkoutProvider.checkoutList).toStringAsFixed(1);
+                    // 获取签名
+                    var sign = SignServices.getSign({
+                      'uid': userInfo[0]['_id'],
+                      'name': this.defaultAddress[0]['name'],
+                      'phone': this.defaultAddress[0]['phone'],
+                      'address': this.defaultAddress[0]['address'],
+                      'all_price': allPrice,
+                      'salt': userInfo[0]['salt'],
+                      'products': json.encode(checkoutProvider.checkoutList),
+                    });
+                    // 请求接口
+                    var api = Config.domain + 'api/doOrder';
+                    var response = await Dio().post(api, data:{
+                      'uid': userInfo[0]['_id'],
+                      'name': this.defaultAddress[0]['name'],
+                      'phone': this.defaultAddress[0]['phone'],
+                      'address': this.defaultAddress[0]['address'],
+                      'all_price': allPrice,
+                      'products': json.encode(checkoutProvider.checkoutList),
+                      'sign': sign,
+                    });
+
+                    print(response);
+                    if(response.data['success']){
+                      // 下单成功,删除购物车已选中的商品
+                      cartProvider.removeItem();
+                      // 替换路由,支付页面返回到购物车
+                      Navigator.of(context).pushReplacementNamed('/pay');
+                    }
+
+                  }else{
+                    Fluttertoast.showToast(
+                      msg: "请填写收货地址",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                    );
+                  }
+
                 })
               ],
             ),

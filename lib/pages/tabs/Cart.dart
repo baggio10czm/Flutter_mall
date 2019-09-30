@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mall/services/CartServices.dart';
-import 'package:flutter_mall/services/UserServices.dart';
+import '../../services/CartServices.dart';
+import '../../services/UserServices.dart';
 import '../../services/ScreenAdapter.dart';
 import '../Cart/CartItem.dart';
 import 'package:provider/provider.dart';
@@ -117,10 +117,11 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  // 去结算
   void doCheckout() async{
     // 获取购物车选中的数据
     List checkoutData = await CartServices.getCheckoutData();
-    // 保存购物车数据到 provider
+    // 保存购物车选中数据到 结算provider
     checkoutProvider.changeCheckoutListData(checkoutData);
     // 判断是否有选中的商品
     if(checkoutData.length>0){

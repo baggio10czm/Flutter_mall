@@ -3,6 +3,7 @@ import 'package:flutter_mall/widget/JdButton.dart';
 import '../../services/UserServices.dart';
 import '../../services/ScreenAdapter.dart';
 import '../../services/EventBus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -50,18 +51,19 @@ class _UserPageState extends State<UserPage> {
             width: double.infinity,
             height: ScreenAdapter.height(220),
             decoration: BoxDecoration(
-              color: Colors.blueGrey,
-              image: DecorationImage(
-                image: AssetImage('images/user_bg.jpg'),
-                fit: BoxFit.cover
-              )
+              color: Colors.redAccent,
+              //image: DecorationImage(
+              //  image: AssetImage('images/user_bg.jpg'),
+              //  fit: BoxFit.cover
+              //)
             ),
             child: Row(
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                   child: ClipOval(
-                    child: Image.asset('images/user.png',fit: BoxFit.cover,width: ScreenAdapter.width(100),height: ScreenAdapter.height(100)),
+//                    child: Image.asset('images/user.png',fit: BoxFit.cover,width: ScreenAdapter.width(100),height: ScreenAdapter.height(100)),
+                    child: Icon(Icons.supervised_user_circle,size: ScreenAdapter.width(100),color: Colors.white),
                   ),
                 ),
                 !this._isLogin ? Expanded(flex:1,child: InkWell(onTap:(){
@@ -82,6 +84,18 @@ class _UserPageState extends State<UserPage> {
           ListTile(
             leading: Icon(Icons.library_books,color: Colors.redAccent),
             title: Text('订单列表'),
+            onTap: () async{
+              if(await UserServices.getUserLoginState()){
+                Navigator.pushNamed(context, '/order');
+              } else {
+                Fluttertoast.showToast(
+                  msg: "先登录",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                );
+                Navigator.pushNamed(context, '/login');
+              }
+            },
           ),
           Divider(height: 1),
           ListTile(
